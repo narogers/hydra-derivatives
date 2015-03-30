@@ -1,4 +1,5 @@
 require 'mini_magick'
+
 module Hydra
   module Derivatives
     class Image < Processor
@@ -53,10 +54,18 @@ module Hydra
         output_file.content = stream
       end
 
-      # Override this method if you want a different transformer, or need to load the
-      # raw image from a different source (e.g.  external file)
+      # Override this method if you want a different transformer, or # need to load the raw image from a different source (e.g.  
+      # external file).
+      #
+      # In this case always add an extension to help out MiniMagick
+      # with RAW files
       def load_image_transformer
-        MiniMagick::Image.read(source_file.content)
+        extension = MIME::Types[source_file.mime_type].first.extensions.first
+        unless (extension.nil?)      
+          MiniMagick::Image.read(source_file.content, '.' + extension)
+        else
+          MiniMagick::Image.read(source_file.content)
+        end
       end
     end
   end

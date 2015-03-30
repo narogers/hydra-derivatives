@@ -18,7 +18,9 @@ module Hydra
     autoload :ExtractMetadata
     autoload :ShellBasedProcessor
     autoload :Jpeg2kImage
+    autoload :RawImage
     autoload :Logger
+    autoload :MimeTypes
 
     # Raised if the timout elapses
     class TimeoutError < ::Timeout::Error; end
