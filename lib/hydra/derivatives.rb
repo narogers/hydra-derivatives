@@ -20,6 +20,7 @@ module Hydra
     autoload :Jpeg2kImage
     autoload :Logger
     autoload :MimeTypes
+    autoload :TempfileService
 
     # Raised if the timout elapses
     class TimeoutError < ::Timeout::Error; end
