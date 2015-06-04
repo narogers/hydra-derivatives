@@ -34,7 +34,7 @@ module Hydra
 
       def create_resized_image(output_file, size, format, quality=nil)
         create_image(output_file, format, quality) do |xfrm|
-          xfrm.resize(size) if size.present?
+          xfrm.scale(size) if size.present?
         end
         output_file.mime_type = new_mime_type(format)
       end
@@ -60,12 +60,11 @@ module Hydra
       # In this case always add an extension to help out MiniMagick
       # with RAW files
       def load_image_transformer
-        extension = MIME::Types[source_file.mime_type].first.extensions.first
-        unless (extension.nil?)      
-          MiniMagick::Image.read(source_file.content, '.' + extension)
-        else
-          MiniMagick::Image.read(source_file.content)
-        end
+        path = source_file.content
+	extension = MIME::Types[source_file.mime_type].first.extensions.first
+	path += ".#{extension}" unless extension.nil?
+
+        MiniMagick::Image.read(path)
       end
     end
   end
