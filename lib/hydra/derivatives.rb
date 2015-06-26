@@ -21,14 +21,12 @@ module Hydra
     autoload :RawImage
     autoload :Logger
     autoload :MimeTypes
-    autoload :TempfileService
 
     # services
     autoload :RetrieveSourceFileService,         'hydra/derivatives/services/retrieve_source_file_service'
     autoload :PersistOutputFileService,          'hydra/derivatives/services/persist_output_file_service'
     autoload :PersistBasicContainedOutputFileService, 'hydra/derivatives/services/persist_basic_contained_output_file_service'
     autoload :TempfileService,                   'hydra/derivatives/services/tempfile_service'
-
 
     # Raised if the timout elapses
     class TimeoutError < ::Timeout::Error; end

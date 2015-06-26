@@ -7,7 +7,7 @@ module Hydra
 
       protected
 
-      def create_image(output_file, format, quality=nil)
+      def create_image(destination_name, format, quality=nil)
         xfrm = load_image_transformer
         # Transpose format and scaling due to the fact that ImageMagick can
         # read but not write RAW files and this will otherwise cause many
@@ -15,7 +15,7 @@ module Hydra
         xfrm.format(format)
         yield(xfrm) if block_given?
         xfrm.quality(quality.to_s) if quality
-        write_image(output_file, xfrm)
+        write_image(destination_name, format, xfrm)
         remove_temp_files(xfrm)
       end
 
@@ -24,6 +24,21 @@ module Hydra
       # for a long time
       def remove_temp_files(xfrm)
         xfrm.destroy!
+      end
+
+      # Override this method if you want a different transformer, or # need to load the raw image from a different source (e.g.  
+      # external file).
+      #
+      # In this case always add an extension to help out MiniMagick
+      # with RAW files
+      def load_image_transformer
+        extension = MIME::Types[source_file.mime_type].first.extensions.first
+
+        if extension.present?
+          MiniMagick::Image.read(source_file.content, ".#{extension}")
+        else
+          MiniMagick::Image.read(source_file.content)
+        end
       end
     end
   end

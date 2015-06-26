@@ -23,7 +23,17 @@ module Hydra
           format = opts.fetch(:format, 'png')
           destination_name = output_filename_for(name, opts)
           create_resized_image(destination_name, opts[:size], format)
+<<<<<<< HEAD
         end
+      end
+
+      def output_filename_for(name, opts = {})
+        if opts.has_key? :datastream
+          Deprecation.warn Hydra::Derivatives::Image, 'The :datastream option is deprecated and will be removed in a future release.' 
+=======
+>>>>>>> read-only-images
+        end
+        opts.fetch(:datastream, output_file_id(name))
       end
 
       def output_filename_for(name, opts = {})
